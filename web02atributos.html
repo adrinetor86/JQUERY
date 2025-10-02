@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        img{
+            width: 150px;
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
+
+<img src="images/image1.jpg">
+<img src="images/image1.jpg">
+<img src="images/image1.jpg">
+<p>Prueba</p>
+<h1>Prueba</h1>
+<script src="js/jquery-3.7.1.js"></script>
+
+<script>
+    $(document).ready(function(){
+
+        $("img").mouseover(function (){
+            var actual=$(this).attr("src");
+            console.log(actual);
+            $(this).attr("src","images/image2.jpg")
+        })
+        $("img").mouseout(function (){
+            var actual=$(this).attr("src");
+            console.log(actual);
+            $(this).attr("src","images/image1.jpg")
+
+        })
+
+        $("p").mouseover(function (){
+            $(this).css({"color":"green","backgroundColor":"black"});
+        })
+
+       $("h1").click(function (){
+           $(this).addClass("active");
+           $(".active").click(function (){
+               $(this).css("color","green");
+           })
+       })
+
+
+    })
+</script>
+</body>
+</html>

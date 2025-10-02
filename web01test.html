@@ -6,9 +6,48 @@
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
+    <style>
+        .rojo{
+            color:red;
+        }
+    </style>
 </head>
 <body>
-aaaaaaa
+
+<h1 class="rojo">Selectores JQuery</h1>
+<h2 class="rojo">Esto es una prueba</h2>
+
+<button id="boton1">Soy un boton 1</button>
+<button id="boton2">Soy un boton 2</button>
+
+<p>Haz click para probar</p>
+<script src='js/jquery-3.7.1.js'></script>
+<script>
+    //AQUI NUESTRO CODIGO JQUERY
+    //LA PRIMERA LINEA DEBE SER SIEMPRE LA SIGUIENTE
+
+    $(document).ready(function () {
+        //AQUI DENTRO LAS PETICIONES
+       // alert("Hola Mundo");
+       //  $("#boton1").hide();
+    $("p").click(function () {
+
+        //IMPRESCINDIBLE EN DESARROLLO FRONT
+        //MENSAJES POR CONSOLA
+
+        console.log("clicked");
+        $("#boton1").hide();
+        //EXISTE UNA PALABRA CLAVE QUE INDICA QUE
+        //ACCEDEMOS AL OBJETO QUE HA REALIZADO LA LLAMADA:this
+        $(this).hide();
+
+    })
+        $(".rojo").click(function () {
+            $(this).hide();
+        })
+    })
+
+
+</script>
 </body>
 </html>
