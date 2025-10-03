@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script src="js/jquery-3.7.1.js"></script>
+
+<h1>FILTROS XML</h1>
+<label>Introduzca ID:</label>
+<input type="text" id="cajaId">
+
+<button id="btnAtributo">Buscar Atributo ID</button>
+
+<hr/>
+
+<label>Introduzca Localidad</label>
+<input type="text" id="cajaLocalidad">
+<button id="btnLocalidad">Buscar Localidad</button>
+<hr/>
+
+<h1 style="color: fuchsia" id="mensaje"></h1>
+<ul id="listaDepartamentos"></ul>
+
+<script>
+
+    $(document).ready(function () {
+
+
+        $("#btnAtributo").click(function (){
+            console.log("Fuera del servicio");
+            $.get("documents/departamentos.xml", function (data) {
+                console.log("Leyendo...");
+            //EL FILTRO SERA EL SIGUIENTE: DEPT[DEPT_NO=10]
+                var id=$("#cajaId").val()
+                console.log(id)
+                var filtro="DEPT[DEPT_NO=" + id + "]";
+                //SOLAMENTE TENEMOS UN ID POR DEPARTAMENTO
+                var nododept =$(data).find(filtro).first();
+                var nombre =$(nododept).find("DNOMBRE").text();
+                var localidad =$(nododept).find("LOC").text();
+                $("#mensaje").text("Departamento: "+nombre + ", Localidad: "+localidad);
+            })
+        })
+
+        $("#btnLocalidad").click(function (){
+            $.get("documents/departamentos.xml", function (data) {
+                console.log("Leyendo...");
+                var localidad =$("#cajaLocalidad").val();
+                //EL FILTRO SERA EL SIGUIENTE: LOC:contains(GIJON)
+                var filtro="LOC:contains("+localidad+")";
+                //SON VARIOS ELEMENTOS LOS QUE PODRIA DEVOLVER
+                var html="";
+
+                $(data).find(filtro).each(function(){
+                    var cosa=$(this).text();
+
+                    html+="<li>"+cosa+"</li>";
+                    var nombre=$(cosa).parent().text();
+
+                    console.log("Nombre: "+nombre);
+                });
+                $("#listaDepartamentos").html(html);
+            })
+        })
+
+    })
+
+</script>
+</body>
+</html>

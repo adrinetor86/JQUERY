@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        img{
+            width: 200px;
+            height: 200px;
+        }
+
+    </style>
+</head>
+<body>
+
+
+
+<h1>Generar Imagenes</h1>
+
+
+<input type="range" id="cajaRango" max="20" min="1" value="1" >
+<span id="valorRango"></span>
+<div id="contenedor"></div>
+<script src="js/jquery-3.7.1.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#cajaRango").change(function () {
+            var rangoImagenes= parseInt($("#cajaRango").val());
+            $("#valorRango").text(rangoImagenes);
+            //LIMPIAMOS EL CONTENEDOR DE IMAGENES
+            $("#contenedor").html("");
+
+            for(var i = 0; i <= rangoImagenes; i++) {
+                var imagen =$("<img>")
+                imagen.attr("src", "images/image1.jpg");
+                $("#contenedor").append(imagen);
+
+                imagen.mouseover(function () {
+                    $(this).attr("src","images/image2.jpg");
+                })
+                imagen.mouseout(function () {
+                    $(this).attr("src", "images/image1.jpg");
+
+                })
+            }
+        })
+    })
+
+</script>
+
+
+</body>
+</html>

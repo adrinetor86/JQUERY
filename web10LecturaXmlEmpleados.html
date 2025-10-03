@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script src="js/jquery-3.7.1.js"></script>
+
+<h1>XML Empleados</h1>
+<button id="btnLeer">Leer XML Empleados</button>
+<ul id="listaEmpleados">
+
+</ul>
+
+<script>
+    $(document).ready(function () {
+        $("#btnLeer").click(function () {
+            console.log("Antes del servicio");
+
+            $.get("documents/empleados.xml",function (data) {
+                console.log("Dentro del servicio");
+                var html="";
+                //BUSCAMOS LA ETIQUETA <APELLIDO>
+
+                $(data).find("APELLIDO").each(function () {
+                    //EL CONTENIDO YA ES ACCESIBLE
+                    var apellido =$(this).text();
+                    html+="<li>" + apellido + "</li>";
+
+                })
+                $("#listaEmpleados").html(html);
+            })
+            console.log( "Despues del servicio");
+
+        })
+    });
+</script>
+</body>
+</html>

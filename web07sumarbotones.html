@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Suma Botones</title>
+<style>
+ #contenedor-padre{
+     width: 100%;
+     height: max(100vh);
+     justify-content: center;
+     align-items: center;
+     background-color: antiquewhite;
+     text-align: center;
+ }
+</style>
+</head>
+<body>
+<script src="js/jquery-3.7.1.js"></script>
+
+<div id="contenedor-padre">
+
+<h1>GENERADOR BOTONES</h1>
+
+<div id="contenedor"></div>
+    <hr/>
+<span hidden="hidden" id="reseteo">Pulsa el número para resetear la suma</span>
+
+<h1 id="resultado"></h1>
+
+</div>
+<script>
+    $(document).ready(function () {
+        var suma=0;
+
+        for(var i=0;i<10;i++){
+
+            var boton=$("<button>").css({"width":"200px",
+                                         "height":"80px",
+                                         "margin":"5px",
+                                         "border":"2px solid",
+                                         "border-radius":"10px"});
+
+
+            boton.text(parseInt(Math.random()*100))
+            boton.val(boton.text())
+            boton.appendTo("#contenedor");
+            $(boton).click(function () {
+                $("#reseteo").show();
+                var valor=parseInt($(this).val());
+
+                suma+=valor;
+                console.log(valor+suma);
+                $("#resultado").html("");
+                $("#resultado").append(suma);
+
+                $("#resultado").click(function () {
+                    $("#resultado").html("0");
+                    suma=0;
+                })
+            });
+        }
+    })
+
+
+</script>
+</body>
+</html>

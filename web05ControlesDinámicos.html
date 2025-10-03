@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/jquery-3.7.1.js"></script>
+</head>
+
+
+<body>
+<h1>Controles Dinámicos</h1>
+<label > Introduzca un texto</label>
+<input type="text" id="caja"/>
+<button id="btnGenerar">Generar Control</button>
+<hr/>
+<div id="contenedor"></div>
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+    $("#btnGenerar").click(function () {
+        var texto = $("#caja").val();
+        //CREAMOS UN PARRAFO CON UN EVENTO/LISTENER
+        //OBJETO CREADO Y POSTERIORMENTE INCLUIMOS SUS ATRIBUTOS
+        var parrafo = $("<p>");
+        parrafo.text(texto);
+        parrafo.css("color","blue");
+
+
+        //CREAR EL OBJETO E INICIALIZAR SUS ATRIBUTOS
+        var parrafo2 = $("<p>",{"text":texto,"style":"color:green"});
+
+        //AÑADIMOS AL CONTENEDOR
+        $("#contenedor").append(parrafo);
+
+        $(parrafo).click(function () {
+            
+            $(this).text("pulsado!");
+        });
+
+    })
+
+    });
+</script>
+</body>
+</html>
