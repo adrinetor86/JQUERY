@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -57,12 +57,19 @@
                 var html="";
 
                 $(data).find(filtro).each(function(){
-                    var cosa=$(this).text();
 
-                    html+="<li>"+cosa+"</li>";
-                    var nombre=$(cosa).parent().text();
+                    console.log("Dentro"+data)
 
-                    console.log("Nombre: "+nombre);
+                    // SUBIMOS AL NODO <DEPT>
+                    var deptNode = $(this).parent();
+                    var deptNo = deptNode.attr("DEPT_NO");
+                    var nombre = deptNode.find("DNOMBRE").text();
+                    console.log("DEPT_NO"+deptNo)
+                    console.log("NOMBRE"+nombre)
+
+                    html+="<li>Nombre: "+nombre+"</li>";
+                    html+="<li>Departamento: "+deptNo+"</li><br>";
+
                 });
                 $("#listaDepartamentos").html(html);
             })
