@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<h1>Coches</h1>
+<select id="listaCoches"></select>
+<script src="js/jquery-3.7.1.js"></script>
+
+<div id="contenedorCoche">
+    <img src="" alt="" id="imagenCoche">
+</div>
+<script>
+
+
+    $(document).ready(function(){
+        let url ="https://apiclientesxml.azurewebsites.net/"
+        let request ="api/Clientes/GetCochesXML"
+
+        var html="";
+        $.get(url+request,function (data){
+            console.log("leyendo...");
+
+            $(data).find("coche").each(function (){
+                console.log("entrando...");
+                var id=  $(this).attr("idcoche")
+                var marca=  $(this).find("marca").text()
+                var modelo=  $(this).find("modelo").text()
+
+                html+="<option value='"+id+"'>"+marca+" "+modelo+"</option>";
+                console.log(id)
+            })
+
+            $("#listaCoches").html(html)
+        })
+
+        $("select").change(function(){
+
+           var id = $(this).val();
+           $.get(url+request,function (data){
+
+               var filtro="coche[idcoche="+id+"]";
+               // console.log(filtro)
+
+                   var nodo=$(data).find(filtro).first()
+
+                   var imagen = nodo.find("imagen").text();
+
+                   $("#imagenCoche").attr("src",imagen);
+                   console.log("entrando...");
+
+           })
+        })
+    })
+</script>
+
+
+</body>
+</html>

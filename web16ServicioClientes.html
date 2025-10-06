@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+</head>
+<body>
+<h1>Clientes:</h1>
+<select id="cajaSelect"></select>
+
+<script src="js/jquery-3.7.1.js"></script>
+
+
+<table id="tabla">
+    <thead>
+    <th>ID</th>
+    <th>Nombre</th>
+    <th>Direccion</th>
+    <th>Email</th>
+    <th>CP</th>
+    <th>Pagina web</th>
+    <th>Foto</th>
+    </thead>
+    <tbody>
+
+    </tbody>
+
+</table>
+<script>
+
+    $(document).ready(function(){
+
+        let url="https://apiclientesxml.azurewebsites.net/"
+        let request ="api/Clientes/GetClientesXML"
+
+        $.get(url+request,function(data){
+            console.log("Leyendo")
+            var html="";
+            $(data).find("CLIENTE").each(function(){
+                console.log("Entrando")
+                var id= $(this).attr("IDCLIENTE")
+                var nombre = $(this).find("nombre").text();
+                // console.log(nombre)
+
+                html+="<option value='"+id+"'>"+nombre+"</option>";
+            })
+            $("#cajaSelect").html(html)
+
+        })
+
+        $("#cajaSelect").change(function() {
+
+            var id = $(this).val();
+            var html = "";
+            console.log("el id: " + id)
+
+            $.get(url + request, function (data) {
+                var filtro="CLIENTE[IDCLIENTE="+id+"]"
+
+                var cliente = $(data).find(filtro).first();
+                var nombre = cliente.find("NOMBRE").text();
+                var direccion = cliente.find("EMAIL").text();
+                var email = cliente.find("DIRECCION").text();
+                var cp = cliente.find("CODIGOPOSTAL").text();
+                var pagina = cliente.find("PAGINAWEB").text();
+                var img = cliente.find("IMAGENCLIENTE").text();
+
+                console.log(nombre)
+
+
+                html+= "<tr>";
+                html+= "<td>" + id + "</td>";
+                html+= "<td>" + nombre + "</td>";
+                html+= "<td>" + direccion + "</td>"
+                html+= "<td>" + email + "</td>";
+                html+= "<td>" + cp + "</td>";
+                html+= "<td>" + pagina + "</td>";
+                html+= "<td> <img style='width: 120px; height: 100px' src='"+img+"'></td>";
+                html+= "</tr>";
+
+                $("#tabla tbody").html(html)
+                $("td:odd").css({"backgroundColor":"grey"})
+                $("td:even").css({"backgroundColor":"lightgreen"})
+            })
+
+        })
+
+    })
+
+</script>
+</body>
+</html>

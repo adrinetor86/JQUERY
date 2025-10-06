@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<h1>Notas Alumnos XML</h1>
+
+<p>Introduzca la nota</p>
+<input type ="number" id="cajaNota">
+<button id="btnBuscar">Buscar Alumnos</button>
+
+<table id="tablaAlumnos">
+    <thead>
+    <th>Nombre</th>
+    <th>Apellidos</th>
+    <th>Nota</th>
+    </thead>
+    <tbody id="tbodyAlumnos">
+
+    </tbody>
+
+</table>
+<script src="js/jquery-3.7.1.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        $("#btnBuscar").click(function () {
+
+            $.get("documents/alumnos.xml", function (data) {
+                console.log("LEYENDO");
+                var nota= parseInt($("#cajaNota").val());
+
+                 var html="";
+
+                $(data).find("alumno").each(function () {
+                 var notaAlumno =parseInt($(this).find("nota").first().text());
+
+                 //LOS FILTROS SE HARAN A BASE DE IF
+                 if(notaAlumno>=nota){
+
+                    console.log("entrando");
+                    var nombre = $(this).find("nombre").text();
+                    var apellidos = $(this).find("apellidos").text();
+                    html+="<tr>";
+                    html+="<td>"+nombre+"</td>";
+                    html+="<td>"+apellidos+"</td>";
+                    html+="<td>"+notaAlumno+"</td>"
+                    html+="</tr>"
+                }
+
+                });
+        $("#tablaAlumnos tbody").append(html);
+
+
+            })
+
+        })
+
+    })
+
+
+</script>
+</body>
+</html>
