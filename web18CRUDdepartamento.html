@@ -10,6 +10,19 @@
 <body>
 
 <h1>CRUD Departamentos XML</h1>
+<label>Id Departamento</label>
+<input type="text" id="cajaId">
+
+<label>Nombre</label>
+<input type="text" id="cajaNombre">
+
+<label>Localidad</label>
+<input type="text" id="cajaLocalidad">
+
+<button id="btnInsert">Insertar</button>
+<button id="btnUpdate">Modificar</button>
+<button id="btnDelete">Eliminar</button>
+
 <table id="tablaDepartamentos">
     <thead>
     <tr>
@@ -28,8 +41,80 @@
 
     $(document).ready(function () {
         loadDepartamentos();
-    })
 
+        $("#btnInsert").click(function (){
+
+            let id= $("#cajaId").val();
+            let nombre= $("#cajaNombre").val();
+            let localidad= $("#cajaLocalidad").val();
+            //NECESITAMOS GENERAR UN STRING CON LA MISMA ESTRUCTURA
+            //QUE EL DOCUMENTO XML
+
+            let dataXml =getDepartamentoXML(id,nombre,localidad);
+
+            let request="api/departamentos";
+             //REALIZAMOS LA PETICION CON AJAX
+
+            $.ajax({
+                url:url+request,
+                type:"POST",
+                contentType:"text/xml",
+                data:dataXml,
+                success:function(){
+                    console.log("Insertado");
+                    loadDepartamentos();
+                }
+            })
+        })
+
+        $("#btnUpdate").click(function (){
+
+            let id= $("#cajaId").val();
+            let nombre= $("#cajaNombre").val();
+            let localidad= $("#cajaLocalidad").val();
+
+            let dataXml =getDepartamentoXML(id,nombre,localidad);
+
+            let request="api/departamentos";
+            $.ajax({
+                url:url+request,
+                type:"PUT", //Para modificar
+                contentType:"text/xml",
+                data:dataXml,
+                success:function(){
+                    console.log("----Modificado----");
+                    loadDepartamentos();
+                }
+
+            })
+        })
+
+        $("#btnDelete").click(function (){
+
+            let id= $("#cajaId").val();
+
+            let request="api/departamentos/"+id;
+            $.ajax({
+                url:url+request,
+                type:"DELETE",
+                success:function(){
+                    console.log("----ELIMINADO----")
+                    loadDepartamentos();
+                }
+            })
+        })
+
+    })
+    function getDepartamentoXML(id,nombre,localidad){
+        //COPIAMOS EL CODIGO DE GENERACION XML
+
+        let dataXml ="<Departamento>";
+        dataXml+="<IdDepartamento>"+id+"</IdDepartamento>";
+        dataXml+="<Nombre>"+nombre+"</Nombre>";
+        dataXml+="<Localidad>"+localidad+"</Localidad>";
+        dataXml+="</Departamento>"
+        return dataXml;
+    }
     function loadDepartamentos() {
         var request ="api/departamentos"
         $.get(url+request,function (data) {
