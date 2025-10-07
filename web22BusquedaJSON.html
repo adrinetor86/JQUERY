@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<h1>JUGADORES</h1>
+
+<select id="selJugadores"></select>
+<div id="divJugadores"></div>
+<script src="js/jquery-3.7.1.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        $.ajax({
+            url:"documents/jugadores.json",
+            type:"GET",
+            dataType: "json",
+            success: function (data) {
+                console.log("--ENTRANDO--");
+                var html="";
+                $.each(data.jugadores, function (index, value) {
+                    html+="<option value='" + index + "'>" + value.nombre + "</option>";
+                })
+                $("#selJugadores").html(html);
+
+            }
+        })
+
+        $("#selJugadores").change(function () {
+
+            var indiceJugador=$("#selJugadores").val()
+            $.ajax({
+                url:"documents/jugadores.json",
+                type:"GET",
+                dataType: "json",
+                success: function (data) {
+                    var html=""
+                    console.log("--ENTRANDO--");
+
+                    console.log(data.jugadores[indiceJugador])
+
+                    let jugador=data.jugadores[indiceJugador]
+
+                    var posicion=jugador.posicion
+                    var numero=jugador.numero
+                    var imagen =jugador.imagen
+
+                    html+="<h3>"+posicion+"</h3>";
+                    html+="<h3>"+numero+"</h3>";
+                    html+="<img src='"+imagen+"'/>";
+                    $("#divJugadores").html(html);
+
+                    /*   $.each(data.jugadores, function (index, value) {
+                           var playerName=value.nombre
+
+                           if(playerName === indiceJugador) {
+                               console.log("IF BUENO");
+                               var posicion=value.posicion
+                               var numero=value.numero
+                               var imagen =value.imagen
+
+                           html+="<h3>"+playerName+"</h3>";
+                           html+="<h3>"+posicion+"</h3>";
+                           html+="<h3>"+numero+"</h3>";
+                           html+="<img src='"+imagen+"'/>";
+                           }
+                       })*/
+                }
+            })
+
+        })
+    })
+</script>
+
+
+
+</body>
+</html>
