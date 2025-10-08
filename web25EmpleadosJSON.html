@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Encabezado de la tabla */
+        th {
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+            padding: 12px;
+        }
+
+        /* Celdas normales */
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Fila al pasar el mouse */
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        ul {
+            list-style: none;         /* Quita los puntos predeterminados */
+            padding: 0;
+            margin: 20px 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Estilo base para elementos de la lista */
+        li {
+            background: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 12px 16px;
+            border-left: 5px solid #4CAF50; /* Barra de color a la izquierda */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: background 0.3s ease;
+        }
+
+        /* Hover efecto para interacción */
+        li:hover {
+            background: #e8f5e9;
+            cursor: pointer;
+        }
+
+        a {
+            padding-left: 10px;
+            text-decoration: none; /* Quita el subrayado */
+            font-weight: 500;
+            transition: color 0.3s ease, border-bottom 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        /* Hover con subrayado animado */
+        a:hover {
+            color: #388e3c;
+            border-bottom: 2px solid #388e3c;
+        }
+
+
+    </style>
+</head>
+<body>
+<h1> Maestro detalle empleados departamento</h1>
+<ul id="listaDep"></ul>
+<table id="tablaEmpleados" hidden>
+    <thead>
+    <tr>
+        <th>Id Empleado</th>
+        <th>Apellido</th>
+        <th>Oficio</th>
+        <th>Salario</th>
+        <th>Departamento</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<script src="js/jquery-3.7.1.js"></script>
+<script>
+
+    let urlDept="https://apicruddepartamentospgs.azurewebsites.net/webresources/departamentos"
+    let urlEmp="https://apiempleadosspgs.azurewebsites.net/"
+    $(document).ready(function(){
+        loadDepartamentos()
+    })
+
+    function loadDepartamentos(){
+        var html=""
+        var request="api/Empleados/EmpleadosDepartamento/"
+        $.getJSON(urlDept,function (data){
+            console.log(data)
+            $.each(data, function (key, departamento){
+
+                /*html+="<li>"+departamento.nombre+"" +
+                    "<a href='#' data-key='"+departamento.numero+"'>Ver Empleados</a>" +
+                    "</li>"*/
+                // html+="<li>"+departamento.nombre+"</li>"
+
+                var list =$("<li>",{"text":departamento.nombre})
+
+                var link=$("<a>",{"href":"#","text":"Ver Empleados","data-key":departamento.numero})
+
+                list.append(link)
+                console.log(departamento.nombre)
+                $("#listaDep").append(list)
+            })
+            // $("#listaDep").html(html)
+
+            $("a").click(function(){
+                console.log("departamento clicked");
+                var html=""
+                var id= $(this).attr("data-key")
+                $.getJSON(urlEmp+request+id,function (data){
+                    console.log(data)
+
+                    if(data.length>0) {
+                        $.each(data, function (key, empleado) {
+
+                            html += "<tr>"
+                            html += "<td>" + empleado.idEmpleado + "</td>"
+                            html += "<td>" + empleado.apellido + "</td>"
+                            html += "<td>" + empleado.oficio + "</td>"
+                            html += "<td>" + empleado.salario + "</td>"
+                            html += "<td>" + empleado.departamento + "</td>"
+                            html += "</tr>"
+
+                            console.log(empleado)
+                        })
+                        $("#tablaEmpleados").show()
+                        $("#tablaEmpleados tbody").html(html)
+                    }else{
+                        alert("No hay empleados en este departamento")
+                    }
+                })
+            })
+
+
+        })
+
+
+    }
+</script>
+
+</body>
+</html>
