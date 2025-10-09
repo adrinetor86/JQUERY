@@ -203,7 +203,11 @@
 
     let url="https://apicrudhospital.azurewebsites.net/"
     $("document").ready(function () {
-    let request="webresources/hospitales"
+        loadHospitals()
+    })
+
+    function loadHospitals(){
+        let request="webresources/hospitales"
 
         $.ajax({
             url: url+request,
@@ -219,17 +223,34 @@
                     html+="<td>"+ hospital.nombre+"</td>"
                     html+="<td>"+ hospital.direccion +"</td>"
                     html+="<td>"
-                    html+="<a href='web28DetailsHospital.html?idHospital="+ hospital.idhospital+"'>Details</a>"
-                    html+="<a href='web28EditHospital.html?idHospital="+ hospital.idhospital+"'>Edit</a>"
+                    html+="<a href='web28DetailsHospital.html?idHospital="+ hospital.idhospital+"'>Details </a>"
+                    html+="<a href='web28EditHospital.html?idHospital="+ hospital.idhospital+"'>Edit </a>"
+                    html+="<button class='btn-danger bg-danger' value='"+hospital.idhospital+"'> Borrar</button>"
                     html+="</td>"
                     html+="</tr>"
-
                 })
+
                 $("#tablaHospitales tbody").html(html)
+
+                $("td button").click(function () {
+                    console.log("clicked");
+                    borrarHospital($(this).val())
+                })
             }
         })
-    })
+    }
+    function borrarHospital(idHospital) {
+        var request="webresources/hospitales/delete/"+idHospital
 
+        $.ajax({
+            url: url+request,
+            method: "DELETE",
+            success: function () {
+                console.log("Borrado Correctamente");
+                loadHospitals()
+            }
+        })
+    }
 </script>
 </body>
 

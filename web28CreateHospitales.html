@@ -183,27 +183,42 @@
         </div>
     </div>
 </nav>
-<main class="container">
-    <div class="bg-body-tertiary p-5 rounded">
-        <h1>Añadir Hospital</h1>
-
-        <div class="bg-success p-5 rounded">
-            <label >Id Hospital</label>
-            <input class="text-bg-dark" id="cajaIdHosp" type="text" placeholder="Id Hospital"><br>
-
-            <label>Nombre</label>
-            <input class="text-bg-dark" id="cajaNombre" type="text" placeholder="Nombre"><br>
-
-            <label>Dirección</label>
-            <input class="text-bg-dark" id="cajaDir" type="text" placeholder="Direccion"><br>
-
-            <label>Telefono</label>
-            <input class="text-bg-dark" id="cajaTel" type="text" placeholder="Telefono"><br>
-
-            <label>Nº camas</label>
-            <input class="text-bg-dark" id="cajaCamas" type="text" placeholder="Nº camas"><br>
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0"><i class="fas fa-hospital-alt me-2"></i>Añadir Hospital</h3>
+                </div>
+                <div class="card-body">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold"><i class="fas fa-id-card me-2"></i>Id Hospital</label>
+                            <input class="form-control form-control-lg" id="cajaIdHosp" type="text" placeholder="Id Hospital">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold"><i class="fas fa-hospital me-2"></i>Nombre</label>
+                            <input class="form-control form-control-lg" id="cajaNombre" type="text" placeholder="Nombre">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold"><i class="fas fa-map-marker-alt me-2"></i>Dirección</label>
+                            <input class="form-control form-control-lg" id="cajaDir" type="text" placeholder="Dirección">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold"><i class="fas fa-phone me-2"></i>Teléfono</label>
+                            <input class="form-control form-control-lg" id="cajaTel" type="text" placeholder="Teléfono">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold"><i class="fas fa-bed me-2"></i>Nº camas</label>
+                            <input class="form-control form-control-lg" id="cajaCamas" type="text" placeholder="Nº camas">
+                        </div>
+                        <div class="text-end">
+                            <button class="btn btn-success btn-lg px-5" id="btnCreate">
+                                <i class="fas fa-plus me-2"></i>Añadir
+                            </button>
+                        </div>
+                </div>
+            </div>
         </div>
-        <button class="btn btn-info" id="btnCreate">Añadir</button>
     </div>
 </main>
 <script src="js/bootstrap.bundle.js"></script>

@@ -182,19 +182,47 @@
         </div>
     </div>
 </nav>
-<main class="container">
-    <div class="bg-body-tertiary p-5 rounded">
-        <table id="tablaHospitales" class="table table-bordered">
-            <thead>
-            <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Dirección</th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <h1>Prueba</h1>
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="fas fa-hospital-alt me-2"></i>Editar Hospital</h3>
+                </div>
+                <div class="card-body">
+                        <input type="hidden" class="form-control" id="cajaIdHosp">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold"><i class="fas fa-hospital me-2"></i>Nombre</label>
+                            <input class="form-control form-control-lg" id="cajaNombre" type="text"
+                                   placeholder="Nombre del hospital">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold"><i class="fas fa-map-marker-alt me-2"></i>Dirección</label>
+                            <input class="form-control form-control-lg" id="cajaDir" type="text"
+                                   placeholder="Dirección del hospital">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold"><i class="fas fa-phone me-2"></i>Teléfono</label>
+                            <input class="form-control form-control-lg" id="cajaTel" type="tel"
+                                   placeholder="Teléfono de contacto">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold"><i class="fas fa-bed me-2"></i>Nº camas</label>
+                            <input class="form-control form-control-lg" id="cajaCamas" type="number"
+                                   placeholder="Número de camas">
+                        </div>
+
+                        <div class="text-end">
+                            <button class="btn btn-primary btn-lg px-5" id="btnEdit">
+                                <i class="fas fa-save me-2"></i>Guardar cambios
+                            </button>
+                        </div>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 <script src="js/bootstrap.bundle.js"></script>
@@ -203,7 +231,61 @@
 
     let url="https://apicrudhospital.azurewebsites.net/"
     $("document").ready(function () {
-        let request="webresources/hospitales"
+
+
+        var params= new URLSearchParams(window.location.search);
+        var idHospital=params.get("idHospital")
+        console.log(idHospital);
+
+        var requestFind="webresources/hospitales/"+idHospital;
+
+        $.ajax({
+            url:url+requestFind,
+            method:"GET",
+            success:function(data){
+                console.log("Leyendo datos")
+                $("#cajaIdHosp").val(data.idHospital);
+                $("#cajaNombre").val(data.nombre);
+                $("#cajaDir").val(data.direccion);
+                $("#cajaTel").val(data.telefono);
+                parseInt($("#cajaCamas").val(data.camas))
+
+            }
+        })
+
+
+        $("#btnEdit").click(function(){
+            var request="webresources/hospitales/put"
+
+            var nombre=$("#cajaNombre").val()
+            var direccion=$("#cajaDir").val()
+            var telefono=$("#cajaTel").val()
+            var camas=parseInt($("#cajaCamas").val())
+
+            var hospital= new Object()
+
+            hospital.idhospital=parseInt(idHospital);
+            hospital.nombre=nombre;
+            hospital.direccion=direccion;
+            hospital.telefono=telefono;
+            hospital.camas=camas;
+
+            var dataJSON =JSON.stringify(hospital);
+
+            console.log("DATOS "+dataJSON);
+            $.ajax({
+                url:url+request,
+                method:"PUT",
+                contentType:"application/json",
+                data:dataJSON,
+                success:function(){
+                    console.log("MODIFICADO");
+                    window.location.href="web28DetailsHospital.html?idHospital="+idHospital;
+                }
+            })
+        })
+
+
 
     })
 
@@ -211,6 +293,3 @@
 </body>
 
 </html>
-
-
-
