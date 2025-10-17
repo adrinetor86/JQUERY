@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>PRACTICA JQUERY</h1>
+    <select id="cajaSelect">
+
+    </select>
+    <div id="contenedorLista"></div>
+    <div id="contenedorDatos"></div>
+</body>
+<script src="js/jquery-3.7.1.js"></script>
+<script>
+
+    let url="https://apiempleadosspgs.azurewebsites.net/"
+
+
+    function cargarOpciones(){
+
+        let request="api/Empleados"
+        let html=""
+
+        $.getJSON(url+request,function(data){
+
+            console.log("ANTES DEL SERVICIO")
+            console.log(data)
+            $.each(data, function(key, oficina){
+
+                html+="<option val="+oficina.oficio+">"+ oficina.oficio +"</option>"
+            })
+
+            $("#cajaSelect").html(html)
+
+        })
+    }
+
+    $(document).ready(function () {
+
+        cargarOpciones()
+
+        $("#cajaSelect").change(function(){
+
+           console.log("Opcion Seleccionada")
+
+            $("#contenedorLista").html("")
+            let oficioSeleccionado=$("#cajaSelect").val()
+            let request="api/Empleados/EmpleadosOficio/"+oficioSeleccionado;
+            let html=""
+           $.getJSON(url+request,function(data){
+
+                $.each(data, function(key, oficina){
+
+                 let fila=$("<li>").text(oficina.apellido)
+                    console.log(fila.html())
+
+                 let btnDetalle=$("<button value="+oficina.idEmpleado+">").html("Detalle")
+
+                    fila.append(btnDetalle)
+                    $("#contenedorLista").append(fila)
+                })
+
+               $("li button").click(function(){
+                   console.log("clickado")
+
+                   let request="api/Empleados/"+$(this).val()
+                    let html=""
+                   $.getJSON(url+request,function(data){
+
+                       html+="<h1>Nombre: "+data.apellido+"</h1>"
+                       html+="<h2>Oficio: "+data.oficio+"</h2>"
+                       html+="<h1>Salario: "+data.salario+"</h1>"
+
+                        $("#contenedorDatos").html(html)
+                   })
+               })
+
+           })
+        })
+
+    })
+
+
+</script>
+</html>
