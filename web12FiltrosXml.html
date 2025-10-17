@@ -56,21 +56,25 @@
                 //SON VARIOS ELEMENTOS LOS QUE PODRIA DEVOLVER
                 var html="";
 
-                $(data).find(filtro).each(function(){
+                if($(data).find(filtro).length === 0){
+                    $("#mensaje").text("No existe la localidad: "+localidad);
+                }else {
+                    $(data).find(filtro).each(function () {
 
-                    console.log("Dentro"+data)
+                        console.log("Dentro" + data)
 
-                    // SUBIMOS AL NODO <DEPT>
-                    var deptNode = $(this).parent();
-                    var deptNo = deptNode.attr("DEPT_NO");
-                    var nombre = deptNode.find("DNOMBRE").text();
-                    console.log("DEPT_NO"+deptNo)
-                    console.log("NOMBRE"+nombre)
+                        // SUBIMOS AL NODO <DEPT>
+                        var deptNode = $(this).parent();
+                        var deptNo = deptNode.attr("DEPT_NO");
+                        var nombre = deptNode.find("DNOMBRE").text();
+                        console.log("DEPT_NO" + deptNo)
+                        console.log("NOMBRE" + nombre)
 
-                    html+="<li>Nombre: "+nombre+"</li>";
-                    html+="<li>Departamento: "+deptNo+"</li><br>";
+                        html += "<li>Nombre: " + nombre + "</li>";
+                        html += "<li>Departamento: " + deptNo + "</li><br>";
 
-                });
+                    });
+                }
                 $("#listaDepartamentos").html(html);
             })
         })

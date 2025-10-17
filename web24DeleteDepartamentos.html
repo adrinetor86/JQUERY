@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<h1>Departamentos</h1>
+
+<input type="text" id="cajaId">
+<input type="text"  id="cajaNombre">
+<input type="text" id="cajaLocalidad">
+
+<button id="btnAdd">Añadir</button>
+<ul id="listaDept"></ul>
+<script src="js/jquery-3.7.1.js"></script>
+<script>
+
+    let url="https://apicruddepartamentospgs.azurewebsites.net/"
+    $(document).ready(function(){
+
+        var request = "webresources/departamentos"
+        var html=""
+
+        loadDepartamentos();
+
+        $("#btnAdd").click(function(){
+
+            var id=parseInt($("#cajaId").val())
+            var nombre=$("#cajaNombre").val()
+            var localidad=$("#cajaLocalidad").val()
+
+            var departamento=new Object()
+
+            departamento.numero=id
+            departamento.nombre=nombre
+            departamento.localidad=localidad
+
+            dataJSON=JSON.stringify(departamento)
+            console.log(dataJSON)
+            var request = "webresources/departamentos/post"
+
+            $.ajax({
+                url:url+request,
+                method:"POST",
+                data:dataJSON,
+                contentType:"application/json",
+                success:function(){
+                    console.log("--AÑADIDO--")
+                    loadDepartamentos();
+                }
+                })
+        })
+
+        function loadDepartamentos(){
+            var request = "webresources/departamentos"
+            var html=""
+            $.getJSON(url+request, function(data) {
+
+                console.log(data);
+
+                $.each(data, function (key, departamento) {
+                    html += "<li>" + departamento.nombre + "<button class='btnDelete' value='" + departamento.numero + "'>Borrar</button></li>"
+                    console.log(departamento);
+                })
+                $("#listaDept").html(html)
+
+                $(".btnDelete").click(function(){
+                    var id=$(this).val()
+                    console.log(id)
+                    var request = "webresources/departamentos/delete/"+id
+                    $.ajax({
+                        url:url+request,
+                        method:"DELETE",
+                        success:function(){
+                            console.log("Borrado")
+                            loadDepartamentos()
+                        }
+                    })
+                })
+            })
+        }
+
+
+    })
+</script>
+</body>
+</html>

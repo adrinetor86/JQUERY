@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<h1>Clientes XML</h1>
+<div id="contenedorBtn"></div>
+<div id="datosCliente"></div>
+<script src="js/jquery-3.7.1.js"></script>
+<script>
+    $(document).ready(function(){
+
+        let url="https://apiclientesxml.azurewebsites.net/"
+        let request = "api/Clientes"
+        $.get(url+request,function(data){
+            var html="";
+            console.log("----leyendo----");
+
+            $(data).find("Cliente").each(function(){
+
+                console.log("----entrando----")
+                var id =$(this).find("IdCliente").text();
+                var nombre =$(this).find("Nombre").text();
+                console.log(nombre);
+                html+="<button value='"+id+"'>"+nombre+"</button>"
+
+            })
+
+            $("#contenedorBtn").html(html);
+
+            $("button").click(function(){
+
+                console.log($(this).val());
+                var id=$(this).val()
+                var html="";
+                $.get(url+request+"/"+id,function(data){
+
+                    var nombre=$(data).find("Nombre").first().text();
+                    var email=$(data).find("Email").first().text();
+                    var pagina=$(data).find("PaginaWeb").first().text();
+                    var imagen=$(data).find("Imagen").first().text();
+
+                    console.log(nombre);
+                    html+="<h4>Nombre: "+nombre+"</h4>";
+                    html+="<h4>Email: "+email+"</h4>";
+                    html+="<h4>Pagina: "+pagina+"</h4>";
+                    html+="<img src='"+imagen+"'>";
+                    $("#datosCliente").html(html);
+                })
+
+            })
+
+        })
+
+    })
+</script>
+</body>
+</html>
